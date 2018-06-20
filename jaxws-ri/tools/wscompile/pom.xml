@@ -69,8 +69,18 @@
             <artifactId>jaxb-jxc</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-xjc</artifactId>
+        </dependency>
+        <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>jaxws-rt</artifactId>
+            <artifactId>rt</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.istack</groupId>
+            <artifactId>istack-commons-runtime</artifactId>
+            <version>${istack.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
@@ -171,7 +181,7 @@
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>javax.jws</groupId>
-                                    <artifactId>jsr181-api</artifactId>
+                                    <artifactId>javax.jws-api</artifactId>
                                     <type>jar</type>
                                 </artifactItem>
                             </artifactItems>
@@ -185,7 +195,7 @@
                         </goals>
                         <configuration>
                             <outputDirectory>${project.build.directory}/lib</outputDirectory>
-                            <excludeArtifactIds>javax.annotation-api,jsr181-api,jaxb-api,javax.xml.soap-api,jaxws-api,ant,ant-launcher,ant-nodeps,istack-commons-runtime,cobertura,cobertura-runtime</excludeArtifactIds>
+                            <excludeArtifactIds>resolver,javax.annotation-api,javax.jws-api,jaxb-api,javax.xml.soap-api,jaxws-api,ant-launcher,ant-nodeps,cobertura,cobertura-runtime</excludeArtifactIds>
                             <excludeScope>system</excludeScope>
                         </configuration>
                     </execution>
@@ -203,6 +213,28 @@
                 </executions>
             </plugin>
             <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>default-compile</id>
+                        <configuration>
+                            <compilerArgs>
+                                <arg>--upgrade-module-path</arg>
+                                <arg>${project.build.directory}/lib/jaxws-api-${jaxws-api.version}.jar:${project.build.directory}/lib/javax.annotation-api-${javax.annotation-api.version}.jar</arg>
+                                <arg>--module-path</arg>
+                                <arg>${project.build.directory}/lib:${project.build.directory}/classes</arg>
+                                <arg>--add-modules</arg>
+                                <arg>ant</arg>
+                                <arg>--add-reads</arg>
+                                <arg>com.sun.istack.tools=ant</arg>
+                                <arg>--add-reads</arg>
+                                <arg>com.sun.tools.ws=ant</arg>
+                            </compilerArgs>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
@@ -210,7 +242,7 @@
                         <java.io.tmpdir>${project.build.directory}/test-antprojects</java.io.tmpdir>
                         <bin.folder>${project.build.directory}</bin.folder>
                         <jaxb-api.version>${jaxb-api.version}</jaxb-api.version>
-                        <jsr181-api.version>${jsr181-api.version}</jsr181-api.version>
+                        <javax.jws-api.version>${javax.jws-api.version}</javax.jws-api.version>
                         <javax.annotation-api.version>${javax.annotation-api.version}</javax.annotation-api.version>
                         <jaxws-api.version>${jaxws-api.version}</jaxws-api.version>
                         <net.sourceforge.cobertura.datafile>${net.sourceforge.cobertura.datafile}</net.sourceforge.cobertura.datafile>

@@ -302,13 +302,8 @@
                         <execution>
                             <id>default-compile</id>
                             <configuration>
-                                <release>${upper.java.level}</release>
-                                <compilerArgs>
-                                    <arg>--add-modules</arg>
-                                    <arg>java.xml.bind</arg>
-                                    <arg>--upgrade-module-path</arg>
-                                    <arg>${endorsed.dir}</arg>
-                                </compilerArgs>
+                                <source>${upper.java.level}</source>
+                                <target>${upper.java.level}</target>
                             </configuration>
                         </execution>
                         <execution>
@@ -319,14 +314,15 @@
                             <configuration>
                                 <release>${base.java.level}</release>
                                 <excludes>
-                                    <exclude>module-info.java</exclude>
+                                   <exclude>module-info.java</exclude>
                                 </excludes>
                             </configuration>
                         </execution>
                     </executions>
                     <configuration>
                         <!--test compile-->
-                        <release>${base.java.level}</release>
+                        <source>1.8</source>
+                        <target>1.8</target>
                     </configuration>
                 </plugin>
 
@@ -408,7 +404,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>3.0.0-M1</version>
+                    <version>3.0.1</version>
                     <configuration>
                         <aggregate>false</aggregate>
                         <dependencySourceExcludes>
@@ -531,11 +527,6 @@
                         <message>JAX-WS_${project.version}</message>
                     </configuration>
                 </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-antrun-plugin</artifactId>
-                    <version>1.8</version>
-                </plugin>
             </plugins>
         </pluginManagement>
 
@@ -558,7 +549,7 @@
                             <skip>${maven.endorsed.skip}</skip>
                             <outputDirectory>${endorsed.dir}</outputDirectory>
                             <silent>false</silent>
-                            <includeArtifactIds>javax.annotation-api,jsr181-api,jaxb-api,javax.xml.soap-api,jaxws-api</includeArtifactIds>
+                            <includeArtifactIds>javax.annotation-api,javax.jws-api,jaxb-api,javax.xml.soap-api,jaxws-api</includeArtifactIds>
                         </configuration>
                     </execution>
                 </executions>
@@ -712,7 +703,7 @@
             </activation>
             <modules>
                 <module>docs</module>
-                <!--<module>bundles</module>-->
+                <module>bundles</module>
             </modules>
         </profile>
         <profile>
@@ -1024,7 +1015,7 @@
 
         <dependency>
             <groupId>javax.jws</groupId>
-            <artifactId>jsr181-api</artifactId>
+            <artifactId>javax.jws-api</artifactId>
         </dependency>
 
         <dependency>
